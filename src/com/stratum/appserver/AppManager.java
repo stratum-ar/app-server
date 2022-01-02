@@ -33,31 +33,44 @@ public class AppManager {
 
     public void setActiveApp(App activeApp) {
         this.activeApp = activeApp;
+        updateUI();
     }
 
     public void handleRequest(Socket socket) throws IOException {
         DataInputStream inputStream = new DataInputStream(socket.getInputStream());
 
-        byte[] appIdBytes = new byte[36];
-        inputStream.readFully(appIdBytes);
+        int sourceFlag = inputStream.readUnsignedByte();
 
-        App targetApp = getApp(new String(appIdBytes));
-        if (targetApp == null) {
-            socket.close();
+        if (sourceFlag == 0) { // App
+            byte[] appIdBytes = new byte[36];
+            inputStream.readFully(appIdBytes);
 
-            System.out.println("Target app not found, closing connection.");
-            return;
+            App targetApp = getApp(new String(appIdBytes));
+
+            if (targetApp == null) {
+                socket.close();
+
+                System.out.println("Target app not found, closing connection.");
+                return;
+            }
+
+            if (targetApp.isHandled()) {
+                socket.close();
+
+                System.out.println("Target app already connected, closing connection.");
+                return;
+            }
+
+            targetApp.log("App found, establishing connection.");
+            targetApp.handleClient(this, socket);
+        } else if (sourceFlag == 1) { // Input
+            byte[] inputBytes = new byte[3];
+            inputStream.readFully(inputBytes);
+
+            if (activeApp != null) {
+                activeApp.sendInput(inputBytes);
+            }
         }
-
-        if (targetApp.isHandled()) {
-            socket.close();
-
-            System.out.println("Target app already connected, closing connection.");
-            return;
-        }
-
-        targetApp.log("App found, establishing connection.");
-        targetApp.handleClient(this, socket);
     }
 
     public void updateUI() {
