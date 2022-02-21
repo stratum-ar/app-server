@@ -1,11 +1,9 @@
 package com.stratum.appserver;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AppManager {
@@ -85,6 +83,7 @@ public class AppManager {
             socket.getOutputStream().write(payload);
 
             socket.close();
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
     }
 }
