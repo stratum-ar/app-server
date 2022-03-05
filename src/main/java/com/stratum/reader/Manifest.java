@@ -1,5 +1,7 @@
 package com.stratum.reader;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,5 +30,12 @@ public class Manifest {
 
     public void setAppId(String appId) {
         command.set(command.indexOf("$$APPID$$"), appId);
+    }
+
+    protected void runPostInstall() throws IOException {
+        ProcessBuilder processBuilder = new ProcessBuilder(launch.get("postinstall")).inheritIO();
+        processBuilder.directory(new File(getWorkingDirectory()));
+        processBuilder.redirectErrorStream(true);
+        processBuilder.start();
     }
 }
