@@ -41,12 +41,9 @@ public class AppServerApp {
         Manifest manifestDTO =
                 new ManifestReader()
                         .parseJson("/Users/hubertnakielski/stratum/apps/test-app/manifest.json");
+        manifestDTO.setAppId(testApp.getId());
 
-        ProcessBuilder builder =
-                new ProcessBuilder(
-                        manifestDTO.getFirstCommand(),
-                        manifestDTO.getAppIndexFile(),
-                        testApp.getId());
+        ProcessBuilder builder = new ProcessBuilder(manifestDTO.getCommand());
 
         builder.directory(new File(manifestDTO.getWorkingDirectory()));
         builder.redirectErrorStream(true);

@@ -10,7 +10,9 @@ public class ManifestReader {
 
     public Manifest parseJson(String jsonPath) {
         try {
-            return mapper.readValue(new File(jsonPath), Manifest.class);
+            Manifest manifest = mapper.readValue(new File(jsonPath), Manifest.class);
+            manifest.instantiateCommandList();
+            return manifest;
         } catch (IOException e) {
             e.printStackTrace();
         }

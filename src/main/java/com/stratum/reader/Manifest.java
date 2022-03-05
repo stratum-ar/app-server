@@ -1,5 +1,7 @@
 package com.stratum.reader;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +13,7 @@ public class Manifest {
     String app;
     Map<String, String> info;
     Map<String, String> launch;
-
-    public String getAppIndexFile() {
-        String fileName = launch.get("command").split(" ")[1];
-        return getWorkingDirectory() + fileName;
-    }
+    private List<String> command = new LinkedList<>();
 
     public String getWorkingDirectory() {
         String userHomeDir = System.getProperty("user.home");
@@ -24,7 +22,11 @@ public class Manifest {
         return appDir;
     }
 
-    public String getFirstCommand() {
-        return launch.get("command").split(" ")[0];
+    public void instantiateCommandList() {
+        command.addAll(List.of(launch.get("command").split(" ")));
+    }
+
+    public void setAppId(String appId) {
+        command.set(command.indexOf("$$APPID$$"), appId);
     }
 }
