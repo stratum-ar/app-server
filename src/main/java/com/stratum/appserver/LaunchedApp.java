@@ -17,9 +17,8 @@ public class LaunchedApp extends App{
     public App loadApp(String appName) {
         App testApp = new App();
 
-        String workingDir = manifest.getWorkingDirectory();
+        String workingDir = System.getProperty("user.home") + "/stratum/apps/" + appName + "/manifest.json";
 
-        ///home/achreko/stratum/apps/test-app/manifest.json"
         setManifest(new ManifestReader().
                 parseJson(workingDir));
         manifest.setAppId(testApp.getId());

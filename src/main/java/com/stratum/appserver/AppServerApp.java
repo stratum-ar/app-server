@@ -36,6 +36,8 @@ public class AppServerApp {
         appManager.addApp(testApp);
         appManager.setActiveApp(testApp);
 
+
+        launchedApp.buildApp();
         try {
             app.start();
         } catch (IOException e) {
