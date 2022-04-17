@@ -1,8 +1,5 @@
 package com.stratum.appserver;
 
-import com.stratum.reader.Manifest;
-import com.stratum.reader.ManifestReader;
-import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,23 +29,15 @@ public class AppServerApp {
         AppServerApp app = new AppServerApp();
 
         AppManager appManager = app.getAppManager();
+        LaunchedApp launchedApp = new LaunchedApp();
 
-        App testApp = new App();
+        App testApp = launchedApp.loadApp("test-app");
+
         appManager.addApp(testApp);
         appManager.setActiveApp(testApp);
 
-        // EXAMPLE APP
-        Manifest manifestDTO =
-                new ManifestReader()
-                        .parseJson("/Users/hubertnakielski/stratum/apps/test-app/manifest.json");
-        manifestDTO.setAppId(testApp.getId());
 
-        ProcessBuilder builder = new ProcessBuilder(manifestDTO.getCommand());
-
-        builder.directory(new File(manifestDTO.getWorkingDirectory()));
-        builder.redirectErrorStream(true);
-        builder.start();
-
+        launchedApp.buildApp();
         try {
             app.start();
         } catch (IOException e) {
