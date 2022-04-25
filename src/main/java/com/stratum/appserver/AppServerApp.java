@@ -30,14 +30,14 @@ public class AppServerApp {
 
         AppManager appManager = app.getAppManager();
         LaunchedApp launchedApp = new LaunchedApp();
+        App internalApp = new InternalApp();
 
         App testApp = launchedApp.loadApp("test-app");
 
-        appManager.addApp(testApp);
-        appManager.setActiveApp(testApp);
+        appManager.addApp(internalApp);
+        appManager.setActiveApp(internalApp);
 
-
-        launchedApp.buildApp();
+        //        launchedApp.buildApp();
         try {
             app.start();
         } catch (IOException e) {
