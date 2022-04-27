@@ -63,7 +63,7 @@ public class InternalApp implements App {
 
     private byte[] createPayload() {
         byte[] uiPayload1 = new byte[] {1, 33, 16, 32, 120, 20, 0, 4};
-        byte[] uiPayload2 = "dupa".getBytes(StandardCharsets.UTF_8);
+        byte[] uiPayload2 = "abcd".getBytes(StandardCharsets.UTF_8);
         log("Available Apps: " + availableApps);
 
         return concatenateTwoArrays(
