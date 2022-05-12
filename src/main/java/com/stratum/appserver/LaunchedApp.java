@@ -10,25 +10,35 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LaunchedApp extends ExternalApp {
+    private Process process;
     private Manifest manifest;
 
-    public App loadApp(String appName) {
-        App testApp = new ExternalApp();
+    public void setProcess(Process process) {
+        this.process = process;
+    }
+
+    public static App loadApp(String appName) throws IOException {
+        LaunchedApp launchedApp = new LaunchedApp();
 
         String workingDir =
                 System.getProperty("user.home") + "/stratum/apps/" + appName + "/manifest.json";
 
-        setManifest(new ManifestReader().parseJson(workingDir));
-        manifest.setAppId(testApp.getId());
+        Manifest manifest = new ManifestReader().parseJson(workingDir);
+        launchedApp.setManifest(manifest);
+        manifest.setAppId(launchedApp.getId());
 
-        return testApp;
-    }
-
-    public void buildApp() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(manifest.getCommand());
 
         builder.directory(new File(manifest.getWorkingDirectory()));
         builder.redirectErrorStream(true);
-        builder.start();
+
+        launchedApp.setProcess(builder.start());
+
+        return launchedApp;
+    }
+
+    @Override
+    public void close() {
+        process.destroy();
     }
 }

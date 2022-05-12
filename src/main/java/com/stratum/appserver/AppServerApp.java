@@ -32,7 +32,7 @@ public class AppServerApp {
         LaunchedApp launchedApp = new LaunchedApp();
         LauncherApp internalApp = new LauncherApp(appManager);
 
-        App testApp = launchedApp.loadApp("test-app");
+        App testApp = LaunchedApp.loadApp("test-app");
 
         appManager.addApp(internalApp);
         appManager.setLauncherApp(internalApp);

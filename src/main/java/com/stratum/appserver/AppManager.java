@@ -42,13 +42,10 @@ public class AppManager {
     }
 
     public void launchApp(String appName) {
-        LaunchedApp launchedApp = new LaunchedApp();
-        App testApp = launchedApp.loadApp(appName);
-
         try {
-            launchedApp.buildApp();
-            addApp(testApp);
-            setActiveApp(testApp);
+            App app = LaunchedApp.loadApp(appName);
+            addApp(app);
+            setActiveApp(app);
         } catch (IOException ignored) {}
     }
 
@@ -95,6 +92,9 @@ public class AppManager {
 
         if (activeApp != launcherApp) {
             if (x >= 16 && y >= 16 && x < 40 && y < 36) {
+                activeApp.close();
+                appList.remove(activeApp);
+
                 setActiveApp(launcherApp);
             } else {
                 activeApp.sendInput(inputBytes);

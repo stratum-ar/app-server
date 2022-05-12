@@ -101,4 +101,7 @@ public class ExternalApp implements App {
         thread.start();
         handled = true;
     }
+
+    @Override
+    public void close() {}
 }

@@ -69,4 +69,7 @@ public class InternalApp implements App {
         return Utils.concatenateTwoArrays(
                 Utils.concatenateTwoArrays(uiPayload1, uiPayload2), new byte[] {0, 2});
     }
+
+    @Override
+    public void close() {}
 }

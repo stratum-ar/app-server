@@ -16,4 +16,6 @@ public interface App {
     void sendInput(byte[] inputData);
 
     void handleClient(AppManager manager, Socket socket) throws IOException;
+
+    void close();
 }
