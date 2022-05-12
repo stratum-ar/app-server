@@ -34,6 +34,17 @@ public class AppManager {
         updateUI();
     }
 
+    public void launchApp(String appName) {
+        LaunchedApp launchedApp = new LaunchedApp();
+        App testApp = launchedApp.loadApp(appName);
+
+        try {
+            launchedApp.buildApp();
+            addApp(testApp);
+            setActiveApp(testApp);
+        } catch (IOException ignored) {}
+    }
+
     public void handleRequest(Socket socket) throws IOException {
         DataInputStream inputStream = new DataInputStream(socket.getInputStream());
 

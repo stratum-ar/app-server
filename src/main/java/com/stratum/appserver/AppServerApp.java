@@ -30,7 +30,7 @@ public class AppServerApp {
 
         AppManager appManager = app.getAppManager();
         LaunchedApp launchedApp = new LaunchedApp();
-        App internalApp = new InternalApp();
+        App internalApp = new LauncherApp(appManager);
 
         App testApp = launchedApp.loadApp("test-app");
 
