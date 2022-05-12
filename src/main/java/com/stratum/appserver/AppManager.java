@@ -3,16 +3,23 @@ package com.stratum.appserver;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AppManager {
     private List<App> appList;
     private App activeApp;
 
+    private LauncherApp launcherApp;
+
     public AppManager() {
         appList = new ArrayList<>();
-        activeApp = null;
+    }
+
+    public void setLauncherApp(LauncherApp launcherApp) {
+        this.launcherApp = launcherApp;
     }
 
     public App getApp(String id) {
@@ -77,8 +84,23 @@ public class AppManager {
             inputStream.readFully(inputBytes);
 
             if (activeApp != null) {
+                sendInput(inputBytes);
+            }
+        }
+    }
+
+    private void sendInput(byte[] inputBytes) {
+        int x = inputBytes[0];
+        int y = inputBytes[1];
+
+        if (activeApp != launcherApp) {
+            if (x >= 16 && y >= 16 && x < 40 && y < 36) {
+                setActiveApp(launcherApp);
+            } else {
                 activeApp.sendInput(inputBytes);
             }
+        } else {
+            activeApp.sendInput(inputBytes);
         }
     }
 
@@ -88,6 +110,21 @@ public class AppManager {
         }
 
         byte[] payload = activeApp.getUIPayload();
+
+        if (payload[0] == 0) {
+            payload = new byte[] {0};
+        }
+
+        if (activeApp != launcherApp) {
+            payload[payload.length-1] = 1;
+            payload[0] += 1;
+
+            byte[] uiPayload1 = new byte[] {33, 16, 16, 24, 20, 0, 0};
+
+            payload = Utils.concatenateTwoArrays(payload, Utils.concatenateTwoArrays(
+                    uiPayload1, new byte[] {1, 9, 2}));
+            // inject
+        }
 
         try {
             Socket socket = new Socket("localhost", 50666);

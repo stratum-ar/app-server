@@ -66,15 +66,7 @@ public class InternalApp implements App {
         byte[] uiPayload2 = "abcd".getBytes(StandardCharsets.UTF_8);
         log("Available Apps: " + availableApps);
 
-        return concatenateTwoArrays(
-                concatenateTwoArrays(uiPayload1, uiPayload2), new byte[] {0, 2});
-    }
-
-    private byte[] concatenateTwoArrays(byte[] array1, byte[] array2) {
-        byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
-        System.arraycopy(array2, 0, result, array1.length, array2.length);
-        array2 = Arrays.copyOf(result, result.length);
-
-        return array2;
+        return Utils.concatenateTwoArrays(
+                Utils.concatenateTwoArrays(uiPayload1, uiPayload2), new byte[] {0, 2});
     }
 }

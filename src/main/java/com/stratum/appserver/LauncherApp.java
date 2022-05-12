@@ -58,7 +58,7 @@ public class LauncherApp extends InternalApp {
             int offset = i % optionsPerPage;
             byte[] buttonPayload = makeButton(availableApps.get(i), (byte) 16, (byte) (16 + 26 * offset),(byte) 208, (byte) 24 );
 
-            payload = concatenateTwoArrays(payload, concatenateTwoArrays(
+            payload = Utils.concatenateTwoArrays(payload, Utils.concatenateTwoArrays(
                     buttonPayload, new byte[] {1}
             ));
             payload[0] += 1;
@@ -73,15 +73,7 @@ public class LauncherApp extends InternalApp {
         byte[] uiPayload1 = new byte[] {33, x, y, width, height, 0, (byte) text.length()};
         byte[] uiPayload2 = text.getBytes(StandardCharsets.UTF_8);
 
-        return concatenateTwoArrays(
-                concatenateTwoArrays(uiPayload1, uiPayload2), new byte[] {0});
-    }
-
-    private byte[] concatenateTwoArrays(byte[] array1, byte[] array2) {
-        byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
-        System.arraycopy(array2, 0, result, array1.length, array2.length);
-        array2 = Arrays.copyOf(result, result.length);
-
-        return array2;
+        return Utils.concatenateTwoArrays(
+                Utils.concatenateTwoArrays(uiPayload1, uiPayload2), new byte[] {0});
     }
 }
