@@ -64,7 +64,11 @@ public class LauncherApp extends InternalApp {
             payload[0] += 1;
         }
 
-        payload[payload.length - 1] = 2;
+        if (payload.length == 1) {
+            payload = new byte[] {0, 2};
+        } else {
+            payload[payload.length - 1] = 2;
+        }
 
         return payload;
     }

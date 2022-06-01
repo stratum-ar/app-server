@@ -29,10 +29,7 @@ public class AppServerApp {
         AppServerApp app = new AppServerApp();
 
         AppManager appManager = app.getAppManager();
-        LaunchedApp launchedApp = new LaunchedApp();
         LauncherApp internalApp = new LauncherApp(appManager);
-
-        App testApp = LaunchedApp.loadApp("test-app");
 
         appManager.addApp(internalApp);
         appManager.setLauncherApp(internalApp);

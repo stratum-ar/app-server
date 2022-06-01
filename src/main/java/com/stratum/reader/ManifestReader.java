@@ -12,7 +12,6 @@ public class ManifestReader {
         try {
             Manifest manifest = mapper.readValue(new File(jsonPath), Manifest.class);
             manifest.instantiateCommandList();
-            manifest.runPostInstall();
             return manifest;
         } catch (IOException e) {
             e.printStackTrace();
